@@ -1,24 +1,56 @@
-# Ignore node_modules directory
-node_modules/
-
-# Ignore log files
-*.log
-
-# Ignore environment variable files
-.env
-
-# Ignore build directories
-dist/
-build/
-
-# Ignore temporary files
-*.tmp
-*.swp
-
-# Ignore IDE specific files
-.vscode/
-.idea/
-
-# Ignore OS specific files
+# Ignore OS-specific files
 .DS_Store
 Thumbs.db
+
+# Ignore Java compiled files
+*.class
+*.jar
+*.war
+*.ear
+
+# Ignore IDE-specific files
+.idea/
+*.ipr
+*.iws
+*.iml
+
+# Ignore Eclipse-specific files
+.classpath
+.project
+.settings/
+
+# Ignore Maven build directory
+target/
+
+# Ignore TestNG and Cucumber reports
+test-output/
+test-output/**
+cucumber.json
+cucumber.xml
+HtmlReports.html
+
+# Ignore test report files
+*.png
+*.gif
+*.html
+*.css
+*.js
+testng*.xml
+testng-reports/
+testng-reports/**
+
+# Ignore log files and temporary files
+logs/
+*.log
+*.tmp
+
+# Ignore dependency and virtual environments
+node_modules/
+venv/
+__pycache__/
+*.pyc
+
+# Ignore configuration files (if containing sensitive data)
+config.properties
+credentials.json
+.env
