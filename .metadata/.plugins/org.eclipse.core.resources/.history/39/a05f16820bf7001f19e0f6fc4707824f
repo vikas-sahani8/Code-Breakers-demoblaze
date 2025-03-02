@@ -1,0 +1,32 @@
+package demoblaze.tests;
+
+import java.io.IOException;
+
+import org.openqa.selenium.Alert;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import demoblaze.utils.Base;
+import demoblaze.utils.JavaUtility;
+import pages.SignUpPage;
+
+public class SignUp extends Base {
+	
+	@Test(priority = 1)
+	public void SignUpWithValidDetails() throws IOException, InterruptedException {
+	    SignUpPage signUp = new SignUpPage(driver);
+	    signUp.getSignUpLink().click();
+	    signUp.getUsernameField().sendKeys(JavaUtility.getNewUser());
+	    signUp.getPasswordfield().sendKeys(prop("password"));
+	    signUp.getSignUpButton().click();
+
+	    // Handle alert
+	    Alert alert = driver.switchTo().alert();
+	    String mess = alert.getText();
+	    alert.accept();
+
+	    // Assertion: Verify success message
+	    Assert.assertTrue(mess.contains("Sign up successful"), "Sign-up failed! Expected: 'Sign up successful' but got: " + mess);
+	}
+
+}

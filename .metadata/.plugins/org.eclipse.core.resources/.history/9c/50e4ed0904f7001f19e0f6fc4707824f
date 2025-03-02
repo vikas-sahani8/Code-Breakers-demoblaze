@@ -1,0 +1,44 @@
+package demoblaze.tests;
+
+import java.io.IOException;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import demoblaze.utils.Base;
+import pages.LoginPage;
+
+public class Login extends Base{
+
+	//LoggingInWithValidDetails
+		@Test(priority = 1)   
+
+		public void LoginWithValidDetails() throws IOException, InterruptedException {
+			LoginPage login = new LoginPage(driver);
+			login.getLoginshow().click();
+			login.getEmailfield().sendKeys(Base.prop("userName"));
+			login.getPasswordfield().click();
+			login.getPasswordfield().sendKeys(Base.prop("password"));
+			login.getLoginbtn().click();
+			 WebElement success =  login.getsuccess();
+			 	Assert.assertTrue(success.isDisplayed(), "Login failed, 'Log out' button not found");
+			     
+			 
+		}
+		
+		
+		//LoggingInWithInvalidPassword
+		@Test(priority = 2)
+		public void LoginWithInvalidPassword() throws IOException, InterruptedException {
+		    LoginPage login = new LoginPage(driver);
+		    login.getLoginshow().click();
+		    login.getEmailfield().sendKeys(Base.prop("userName"));
+		    login.getPasswordfield().click();
+		    login.getPasswordfield().sendKeys("wrongPassword123");
+		    login.getLoginbtn().click();
+
+		    Assert.assertEquals(JavaUtils.popup(driver), "Error message is not displayed");
+		}
+}

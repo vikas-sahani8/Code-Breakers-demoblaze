@@ -1,0 +1,28 @@
+package demoblaze.tests;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import demoblaze.utils.Base;
+import pages.CheckoutPage;
+import pages.ShoppingCartPage;
+
+public class Checkout extends Base{
+	
+	@Test
+	public void validateCheckoutProcess() {
+		CheckoutPage checkout = new CheckoutPage(driver);
+		ShoppingCartPage shoppingCart = new ShoppingCartPage(driver);
+		shoppingCart.selectProduct("Samsung galaxy s6");
+		shoppingCart.addToCart();
+		shoppingCart.openCart();
+
+		checkout.clickPlaceOrder();
+	    
+		checkout.fillCheckoutDetails("John Doe", "USA", "New York", "1234567812345678", "12", "2025");
+		checkout.completePurchase();
+
+	    Assert.assertTrue(checkout.isOrderSuccessful(), "Order was not completed successfully!");
+	}
+
+}

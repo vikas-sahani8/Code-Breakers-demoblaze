@@ -1,0 +1,32 @@
+package demoblaze.tests;
+
+import static org.testng.Assert.assertEquals;
+
+import java.io.IOException;
+
+import org.testng.annotations.Test;
+
+import demoblaze.utils.Base;
+import pages.HomePage;
+import pages.LoginPage;
+
+public class Login extends Base{
+
+	//LoggingInWithValidDetails
+		@Test(priority = 1)   
+
+		public void LoggingInWithValidDetails() throws IOException, InterruptedException {
+			WebUtils.implicitWait(driver);
+			HomePage homepage = new HomePage(driver);
+			homepage.getMyaccountdropdown().click();
+			homepage.getLogin().click();
+			LoginPage login = new LoginPage(driver);
+			login.getEmailfield().sendKeys("Taffazulansari7979@gmail.com");
+			login.getPasswordfield().click();
+			login.getPasswordfield().sendKeys("Taffazul123");
+			login.getLoginbtn().click();
+			Thread.sleep(2000);
+			assertEquals(login.getEditYourAccountLinkText().getText(), FileUtils.readCommonData("accountcreated"));
+		}
+		
+}

@@ -1,0 +1,26 @@
+package demoblaze.tests;
+
+import static org.testng.Assert.assertEquals;
+
+import java.io.IOException;
+
+import org.testng.annotations.Test;
+
+import demoblaze.utils.Base;
+import pages.LoginPage;
+
+public class Login extends Base{
+
+	//LoggingInWithValidDetails
+		@Test(priority = 1)   
+
+		public void LoginWithValidDetails() throws IOException, InterruptedException {
+			LoginPage login = new LoginPage(driver);
+			login.getEmailfield().sendKeys("Taffazulansari7979@gmail.com");
+			login.getPasswordfield().click();
+			login.getPasswordfield().sendKeys("Taffazul123");
+			login.getLoginbtn().click();
+			 
+		}
+		
+}
