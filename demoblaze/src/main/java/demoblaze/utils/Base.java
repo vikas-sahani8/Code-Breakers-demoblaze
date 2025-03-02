@@ -14,7 +14,7 @@ import org.testng.annotations.BeforeMethod;
 
 public class Base {
 
-	public WebDriver driver;
+	public static WebDriver driver;
   
 	public JavaUtility JavaUtils = new JavaUtility();
 	public static String prop(String key) throws IOException
@@ -30,7 +30,7 @@ public class Base {
 	
 	@BeforeMethod
 	
-	public void configBeforeMethod() throws IOException
+	public void initializeDriver() throws IOException
 	{
 		String browsername =  prop("browsername");
 		if(browsername.equals("chrome"))

@@ -35,8 +35,7 @@ public class Checkout extends Base{
 	    shoppingCart.openCart();
 
 	    checkout.clickPlaceOrder();
-
-	    checkout.completePurchase();  // Try to purchase without entering details
+	    checkout.completePurchase();   
 	    
 	    Assert.assertSame(checkout.isErrorMessageDisplayed(), "Error message not displayed when trying to checkout without details!");
 	}

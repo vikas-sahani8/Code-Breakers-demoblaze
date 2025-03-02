@@ -3,14 +3,16 @@
 <suite name="Suite">
   <test thread-count="5" name="Test">
     <classes>
-      <class name="demoblaze.tests.Checkout"/>
-      <class name="apiTests.LoginApiTest"/>
-      <class name="demoblaze.tests.ShoppingCart"/>
-      <class name="apiTests.AddtoCartApiTest"/>
-      <class name="demoblaze.tests.Login"/>
-      <class name="hooks.Hooks"/>
-      <class name="apiTests.DeleteCartTest"/>
       <class name="demoblaze.tests.SignUp"/>
+       <class name="demoblaze.tests.Login"/>
+       <class name="demoblaze.tests.ShoppingCart"/>
+      <class name="demoblaze.tests.Checkout"/>
+
+      
+      <!--API Test-->
+      <class name="apiTests.LoginApiTest"/>
+      <class name="apiTests.AddtoCartApiTest"/>
+      <class name="apiTests.DeleteCartTest"/>
       <class name="apiTests.ViewCartAPITest"/>
     </classes>
   </test> <!-- Test -->

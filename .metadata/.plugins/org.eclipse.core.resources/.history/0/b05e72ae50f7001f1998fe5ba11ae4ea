@@ -1,0 +1,59 @@
+package demoblaze.utils;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.Properties;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+public class Base {
+    
+    protected static WebDriver driver;
+
+    // Method to read properties file
+    public static String prop(String key) throws IOException {
+        String address = "./src/test/resources/config.properties";
+        FileInputStream fis = new FileInputStream(address);
+        Properties pobj = new Properties();
+        pobj.load(fis);
+        fis.close();  // ✅ Closing the file to prevent memory leaks
+        return pobj.getProperty(key);
+    }
+
+    // Method to initialize WebDriver
+    public void initializeDriver() throws IOException {
+        if (driver == null) {  // ✅ Prevents multiple driver instances
+            String browserName = prop("browsername");
+
+            switch (browserName.toLowerCase()) {
+                case "chrome":
+                    driver = new ChromeDriver();
+                    break;
+                case "firefox":
+                    driver = new FirefoxDriver();
+                    break;
+                case "edge":
+                    driver = new EdgeDriver();
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid browser name: " + browserName);
+            }
+
+            driver.manage().window().maximize();
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(5));
+        }
+    }
+
+    // Method to quit WebDriver
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+            driver = null;  // ✅ Prevents stale session issues
+        }
+    }
+}
