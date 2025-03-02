@@ -3,15 +3,11 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="demoblaze.tests.Checkout">
+      <class name="apiTests.LoginApiTest">
         <methods>
-          <include name="configBeforeMethod"/>
-          <include name="validateCheckoutWithoutDetails"/>
-          <include name="validateCheckoutWithExpiredCard"/>
-          <include name="configAfterMethod"/>
-          <include name="validateCheckoutWithInvalidCard"/>
+          <include name="testInvalidLogin"/>
         </methods>
-      </class> <!-- demoblaze.tests.Checkout -->
+      </class> <!-- apiTests.LoginApiTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

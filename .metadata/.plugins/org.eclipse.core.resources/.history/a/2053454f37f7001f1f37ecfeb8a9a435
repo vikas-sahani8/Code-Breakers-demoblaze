@@ -1,0 +1,70 @@
+package stepDefinition;
+
+import java.io.IOException;
+import org.junit.Assert;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.Alert;
+import demoblaze.utils.Base;
+import pages.LoginPage;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+
+public class LoginSteps {
+
+    WebDriver driver;
+    LoginPage login;
+
+    // This runs before each scenario to initialize WebDriver
+    public LoginSteps() throws IOException {
+        Base base = new Base(); // Create Base class instance
+        this.driver = base.driver; // Assign the WebDriver from Base
+        login = new LoginPage(driver); // Initialize LoginPage after driver is ready
+    }
+
+    @Given("I am on the login page")
+    public void iAmOnTheLoginPage() throws IOException {
+        driver.get(Base.prop("url"));  // Navigate to login page
+        login.getLoginshow().click();  // Click on login button
+    }
+
+    @When("I enter valid email and password")
+    public void iEnterValidEmailAndPassword() throws IOException {
+        login.getEmailfield().sendKeys(Base.prop("userName"));
+        login.getPasswordfield().sendKeys(Base.prop("password"));
+    }
+
+    @When("I enter invalid email and password")
+    public void iEnterInvalidEmailAndPassword() {
+        login.getEmailfield().sendKeys("wrong@example.com");
+        login.getPasswordfield().sendKeys("wrongPassword123");
+    }
+
+    @When("I leave email and password fields empty")
+    public void iLeaveEmailAndPasswordFieldsEmpty() {
+        login.getEmailfield().sendKeys("");
+        login.getPasswordfield().sendKeys("");
+    }
+
+    @And("I click on the login button")
+    public void iClickOnTheLoginButton() {
+        login.getLoginbtn().click();
+    }
+
+    @Then("I should see the \"Edit your account information\" link")
+    public void iShouldSeeTheEditYourAccountInformationLink() {
+        Assert.assertTrue("Login failed!", login.getsuccess().isDisplayed());
+    }
+
+    @Then("I should see a warning message")
+    public void iShouldSeeAWarningMessage() {
+        Alert alert = driver.switchTo().alert();
+        String alertMessage = alert.getText();
+        alert.accept();
+
+        Assert.assertTrue("Alert message verification failed!", 
+                          alertMessage.contains("Wrong password.") || 
+                          alertMessage.contains("Please fill out Email field"));
+    }
+}

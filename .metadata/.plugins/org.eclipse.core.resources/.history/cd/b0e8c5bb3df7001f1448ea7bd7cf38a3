@@ -1,0 +1,71 @@
+package apiTests;
+
+import static io.restassured.RestAssured.given;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+
+public class LoginApiTest {
+
+	 String baseURL = "https://api.demoblaze.com/check"; // API endpoint
+
+    @Test
+    public void testValidLogin() {
+        // Request Body (Adjust based on actual API requirement)
+        String requestBody = "{ \"username\": \"validUser\", \"password\": \"validPass\" }";
+
+        // Send POST request
+        Response response = 
+            given()
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+            .when()
+                .post(baseURL)
+            .then()
+                .extract().response();
+
+        // ✅ Verify Status Code
+        Assert.assertEquals(response.getStatusCode(), 200, "Expected status code 200 for valid login");
+
+        // ✅ Verify Response Headers
+        Assert.assertEquals(response.getHeader("Content-Encoding"), "gzip", "Content-Encoding mismatch!");
+
+        // ✅ Parse JSON Response
+        JsonPath jsonResponse = response.jsonPath();
+
+        // ✅ Verify login success (Adjust based on actual API response)
+        Assert.assertTrue(jsonResponse.getString("message").contains("success"), "Login response validation failed!");
+
+        System.out.println("✅ Valid Login API Test Passed!");
+    }
+
+    @Test
+    public void testInvalidLogin() {
+        String requestBody = "{ \"username\": \"wrongUser\", \"password\": \"wrongPass\" }";
+
+        Response response = 
+            given()
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+            .when()
+                .post(baseURL)
+            .then()
+                .extract().response();
+
+        // ✅ Verify Status Code (Should be 401 or another error code)
+        Assert.assertNotEquals(response.getStatusCode(), 200, "Invalid login should not return 200!");
+
+        // ✅ Extract JSON Response
+        JsonPath jsonResponse = response.jsonPath();
+        String errorMessage = jsonResponse.getString("errorMessage");
+
+        // ✅ Validate Error Message
+        Assert.assertEquals(errorMessage, "Wrong password.", "Error message did not match!");
+
+        System.out.println("✅ Invalid Login API Test Passed!");
+    }
+}

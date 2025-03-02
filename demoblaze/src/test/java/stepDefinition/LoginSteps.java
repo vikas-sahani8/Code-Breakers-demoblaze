@@ -1,5 +1,11 @@
 package stepDefinition;
 
+import java.io.IOException;
+import org.junit.Assert;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.WebDriver;
+import demoblaze.utils.Base;
+import pages.LoginPage;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -7,43 +13,60 @@ import io.cucumber.java.en.When;
 
 public class LoginSteps {
 
-	@Given("Login with valid credentials")
-    public void loginWithValidCredentials() {
-        System.out.println("Inside Step - Login with valid credentials");
-    }
+    WebDriver driver;
+    LoginPage login;
 
-    @When("I enter valid email and password")
-    public void iEnterValidEmailAndPassword() {
-        System.out.println("Inside Step - I enter valid email and password");
-    }
-
-    @And("I click on the login button")
-    public void iClickOnTheLoginButton() {
-        System.out.println("Inside Step - I click on the login button");
-    }
-
-    @Then("I should see the \"Edit your account information\" link")
-    public void iShouldSeeTheEditYourAccountInformationLink() {
-        System.out.println("Inside Step - I should see the \"Edit your account information\" link");
+    public LoginSteps() throws IOException {
+        Base base = new Base();  
+        this.driver = base.driver;  
+        login = new LoginPage(driver);  
     }
 
     @Given("I am on the login page")
-    public void iAmOnTheLoginPage() {
-        System.out.println("Inside Step - I am on the login page");
+    public void iAmOnTheLoginPage() throws IOException {
+        driver.get(Base.prop("url"));  
+        login.getLoginshow().click();   
     }
 
-    @When("I enter invalid email and password")
-    public void iEnterInvalidEmailAndPassword() {
-        System.out.println("Inside Step - I enter invalid email and password");
+    @When("I enter a valid email and password")
+    public void iEnterValidEmailAndPassword() throws IOException {
+        login.getEmailfield().sendKeys("vikas@gmail.com");
+        login.getPasswordfield().sendKeys("12345" );
     }
 
-    @Then("I should see a warning message")
-    public void iShouldSeeAWarningMessage() {
-        System.out.println("Inside Step - I should see a warning message");
+    @When("I enter a valid email and an invalid password")
+    public void iEnterValidEmailAndInvalidPassword() {
+        login.getEmailfield().sendKeys( "vikas@gmail");
+        login.getPasswordfield().sendKeys("siudf");
     }
 
-    @When("I leave email and password fields empty")
+    @When("I enter an invalid email and a valid password")
+    public void iEnterInvalidEmailAndValidPassword() {
+        login.getEmailfield().sendKeys("rydf@example.com");
+        login.getPasswordfield().sendKeys( "12345");
+    }
+
+    @When("I leave the email and password fields empty")
     public void iLeaveEmailAndPasswordFieldsEmpty() {
-        System.out.println("Inside Step - I leave email and password fields empty");
+        login.getEmailfield().clear();
+        login.getPasswordfield().clear();
+    }
+
+    @And("I click the login button")
+    public void iClickOnTheLoginButton() {
+        login.getLoginbtn().click();
+    }
+
+    @Then("I should see the \"Log out\" button")
+    public void iShouldSeeTheLogOutButton() {
+        Assert.assertTrue("Login failed!", login.getsuccess().isDisplayed());
+    }
+
+    @Then("I should see an alert message {string}")
+    public void iShouldSeeAnAlertMessage(String expectedMessage) {
+        Alert alert = driver.switchTo().alert();
+        String alertMessage = alert.getText();
+        alert.accept();
+        Assert.assertEquals("Alert message mismatch!", expectedMessage, alertMessage);
     }
 }
